@@ -1,6 +1,6 @@
 from app.core.db import db
 
-class User(db.Model):
+class users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True)
     email = db.Column(db.String(50), unique=True)
@@ -16,7 +16,7 @@ class User(db.Model):
         self.last_name = last_name
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<users {}>'.format(self.username)
 
     @property
     def full_name(self):

@@ -20,4 +20,4 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = 'changetowhateveryouwant'
 
 # DATABASE CONFIG
-#SQLALCHEMY_DATABASE_URI = ''
+SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@localhost/gepeng'
