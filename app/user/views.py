@@ -8,13 +8,14 @@ def user_login():
     error = None
     # handle get method
     if request.method == 'POST' :
-        if request.form['username'] == 'admin' and request.form['password'] =='admin':
+        if request.form['username'] == 'admin' and request.form['password'] == 'admin':
             session['logged_in'] = True
             return redirect(url_for('home'))
         else:
             error = 'Invalid credintials. Please try again.'
 
-    return render_template('login.html', error=error #+ **locals())
+    return render_template('login.html', error=error, **locals())
+
 
 #@user_views.route('/logout')
 #def logout():
