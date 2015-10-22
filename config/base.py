@@ -5,7 +5,7 @@ import os
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 
-SECRET_KEY = 'changetowhateveryouwant'
+SECRET_KEY = 'gepeng is my name'
 ASSETS_DEBUG = False
 CACHE_TYPE = 'simple'
 
