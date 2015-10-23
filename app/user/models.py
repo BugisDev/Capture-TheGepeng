@@ -17,7 +17,7 @@ class User(db.Model):
         return True
 
     def is_active(self):
-        return self.active
+        return True
 
     def get_fullname(self):
         return '{} {}'.format(self.first_name, self.last_name)

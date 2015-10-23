@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, flash
+from flask import Blueprint, render_template, redirect, url_for, request, session, flash, Response
 from flask.views import MethodView
-from flask.ext.login import current_user, login_user, login_required, logout_user
+from flask.ext.login import  LoginManager, current_user, login_user, login_required, logout_user
 from form import UserLoginForm, UserRegisterForm
 from models import User, db
 
@@ -20,6 +20,8 @@ def home():
 def welcome():
     return render_template('welcome.html')
 
+login_manager = LoginManager()
+login_manager.login_view = "user.login"
 ##############For Login Form#################
 class UserLogin(MethodView):
 
@@ -27,7 +29,7 @@ class UserLogin(MethodView):
         form = UserLoginForm(request.form)
         context = {
             'form': form,
-            'error': None
+            'error': 'Data required'
         }
         return render_template('login.html', **context)
 
@@ -35,7 +37,7 @@ class UserLogin(MethodView):
         form = UserLoginForm(request.form)
         context = {
             'form': form,
-            'error': None
+            'error': 'Data required'
         }
         if form.validate_on_submit():
             user = form.validate_login()
@@ -67,7 +69,7 @@ class UserRegister(MethodView):
         form = UserRegisterForm(request.form)
         context = {
             'form': form,
-            'error': None
+            'error': 'Data Harus diisi'
         }
         if form.validate_on_submit():
             user = User(form.first_name.data, 
@@ -92,7 +94,12 @@ def logout():
     flash ('You\'re Logged Out')
     return redirect(url_for('user.login'))
 
+@user_views.errorhandler(401)
+def custom_401(error):
+    flash('Login required')
+    return redirect(url_for('user.login'))
+
 
 @user_views.errorhandler(404)
-def error(error):
+def page_not_found(error):
     return render_template('error.html'), 404
