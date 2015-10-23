@@ -1,4 +1,5 @@
-from flask import Blueprint, MethodView, render_template, redirect, url_for, request, session, flash
+from flask import Blueprint, render_template, redirect, url_for, request, session, flash
+from flask.views import MethodView
 from functools import wraps
 from form import UserLoginForm
 
