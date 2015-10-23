@@ -16,24 +16,16 @@ def welcome():
 
 class UserLogin(MethodView):
 
-    form = UserLoginForm(request.form)
-
-    def get_context(self):
-        form = self.form
-        error = None
-        context = {
-            'form': form,
-            'error': error
-        }
-        return context
-
     def get(self):
-        context = self.get_context()
+        form = UserLoginForm(request.form)
         return render_template('login.html', **context)
 
     def post(self):
-        context = self.get_context()
-        form = context.get('form', None)
+        form = UserLoginForm(request.form)
+        context = {
+            'form': form,
+            'error': None
+        }
         if form.validate_on_submit():
             user = form.validate_login()
             if user:
