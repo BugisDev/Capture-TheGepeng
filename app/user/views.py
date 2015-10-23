@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, flash
 from flask.views import MethodView
+from flask.ext.login import current_user, login_user, login_required, logout_user
 from functools import wraps
 from form import UserLoginForm
 
