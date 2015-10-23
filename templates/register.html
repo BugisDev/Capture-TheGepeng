@@ -2,25 +2,74 @@
 
 {% block content %}
   <div class="container">
-    <h1>Please register</h1>
-    <br>
-    <form action="" method="post">
-      <input type="text" placeholder="First Name" name="first_name" value="{{ request.form.firstname }}">
-      <input type="text" placeholder="Last Name" name="last_name" value="{{ request.form.last_name }}">
-      <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
-      <input type="text" placeholder="Email" name="email" value="{{ request.form.email }}">
-      <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
-
-      <input class="btn btn-default" type="submit" value="Register">
-    </form>
-    {% if error %}
-      <p class="error"><strong>Error:</strong> {{error}}</p>
-    {% endif %}
-
-    {% for message in get_flashed_messages() %}
-       {{ message }}
-    {% endfor %}
-    </br>
+    <h1>Welcome to Flask!</h1>
+    <p><a href="/login">Login</a> | <a href="/register">Register</a></p>
   </div>
+  <div class="container">
+    <h1>Please Register</h1>
+    <br>
+    <form class="form-signin" role="form" action="" method="post">
+      {{ form.csrf_token }}
+      
+    <label>First Name:</label>
+      <p>
+        {{form.first_name(placeholder="First Name") }}
+        <span class="error">
+          {% if form.first_name.errors %}
+             {{ error }}
+          {% endif %}
+        </span>
+      </p>
 
+    <label>Last name:</label>
+      <p>
+        {{form.last_name(placeholder="Last Name") }}
+        <span class="error">
+          {% if form.last_name.errors %}
+            {{ error }}
+          {% endif %}
+        </span>
+      </p>
+
+      <label>Username:</label>
+      <p>
+        {{form.username(placeholder="Username") }}
+        <span class="error">
+          {% if form.username.errors %}
+          {{ error }}
+          {% endif %}
+        </span>
+      </p>
+
+      <label>Email:</label>
+      <p>
+        {{form.email(placeholder="Email") }}
+        <span class="error">
+          {% if form.email.errors %}
+          {{ error }}
+          {% endif %}
+        </span>
+      </p>
+      
+      <label>Password:</label>
+      <p>
+        {{form.password(placeholder="Password") }}
+        <span class="error">
+          {% if form.password.errors %}
+            {{ error }}
+          {% endif %}
+        </span>
+      </p>
+
+        
+        {{form.password_confirm(placeholder="Repeat password") }}
+        <span class="error">
+          {% if form.password_confirm.errors %}
+            {{ error }}
+          {% endif %}
+        </span>
+      <p></br>
+      <button class="btn btn-sm btn-success" type="submit">Sign Up</button>
+      </p>
+    </form>
 {% endblock %}

@@ -1,1 +1,14 @@
-its user area
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class="container">
+		<h1>Welcome to Flask!</h1>
+		<h3>It is User Area</h3>
+		<br>
+		<p>Click <a href="/logout">here</a> to logout.</p>
+ 		{% for message in get_flashed_messages() %}
+		   {{ message }}
+		{% endfor %}
+	</div>
+{% endblock %}
