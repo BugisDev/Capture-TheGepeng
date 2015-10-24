@@ -1,11 +1,17 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, flash, Response
 from flask.views import MethodView
-from flask.ext.login import  LoginManager, current_user, login_user, login_required, logout_user
+from flask.ext.login import  LoginManager, current_user, login_user, login_required, logout_user, current_app
 from form import UserLoginForm, UserRegisterForm
 from models import User, db
+#from app.news.views import news_views
+
 
 #blueprint for User ==> views
 user_views = Blueprint('user', __name__, template_folder='../../templates', static_folder='../../static')
+
+
+login_manager = LoginManager
+login_manager.login_view = "user.login"
 
 @user_views.route('/')
 def index():
@@ -16,20 +22,18 @@ def index():
 def home():
     return render_template('home.html')
 
-@user_views.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
+        
 
-login_manager = LoginManager()
-login_manager.login_view = "user.login"
 ##############For Login Form#################
 class UserLogin(MethodView):
-
+    if not current_user.is_authenticated(user):
+        return render_template('home.html')
     def get(self):
+
         form = UserLoginForm(request.form)
         context = {
             'form': form,
-            'error': 'Data required'
+            'error': None
         }
         return render_template('login.html', **context)
 
@@ -37,7 +41,7 @@ class UserLogin(MethodView):
         form = UserLoginForm(request.form)
         context = {
             'form': form,
-            'error': 'Data required'
+            'error': None
         }
         if form.validate_on_submit():
             user = form.validate_login()
@@ -45,7 +49,8 @@ class UserLogin(MethodView):
                 login_user(user)
                 return redirect(url_for('user.home'))
             else:
-                context['error'] = 'Invalid Username / Password.'
+                #context['error'] = 'Invalid Username / Password.'
+                error = 'Invalid Username / Password.'
         return render_template('login.html', **context)
 
 ##Route /Login###
@@ -69,8 +74,9 @@ class UserRegister(MethodView):
         form = UserRegisterForm(request.form)
         context = {
             'form': form,
-            'error': 'Data Harus diisi'
+            'error': None
         }
+        
         if form.validate_on_submit():
             user = User(form.first_name.data, 
                         form.last_name.data, 
@@ -80,6 +86,7 @@ class UserRegister(MethodView):
             db.session.add(user)
             db.session.commit()
             flash('Thanks for registering')
+            error = 'something wrong'
             return redirect(url_for('user.login'))
         return render_template('register.html', **context)
 
@@ -91,15 +98,18 @@ user_views.add_url_rule('/register', view_func=UserRegister.as_view('register'))
 @login_required
 def logout():
     logout_user()
-    flash ('You\'re Logged Out')
+ #     flash ('You\'re Logged Out')
     return redirect(url_for('user.login'))
+
+
+
+
 
 @user_views.errorhandler(401)
 def custom_401(error):
-    flash('Login required')
-    return redirect(url_for('user.login'))
+    return render_template('401.html')
 
 
 @user_views.errorhandler(404)
-def page_not_found(error):
+def page_not_found(e):
     return render_template('error.html'), 404

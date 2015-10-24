@@ -10,13 +10,11 @@
 
 {% endblock %}
 
-{% with messages = get_flashed_messages() %}
+{% if error %}
     <div class=flashes>
-   		{% for message in messages %}
-      <p>{{ message }}</p>
-    	{% endfor %}
+      <p>{{ error }}</p>
     </div>
-{% endwith %}
+{% endif %}
 
 </body>
 </html>
