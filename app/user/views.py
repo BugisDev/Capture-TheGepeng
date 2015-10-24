@@ -26,10 +26,9 @@ def home():
 
 ##############For Login Form#################
 class UserLogin(MethodView):
-    if not current_user.is_authenticated(user):
-        return render_template('home.html')
     def get(self):
-
+        if current_user.is_authenticated:
+            return redirect('/')
         form = UserLoginForm(request.form)
         context = {
             'form': form,
